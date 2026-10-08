@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contagem Regressiva - Recepção EEMTI Raimundo Marques</title>
+    <!-- Adicionando o Tailwind CSS para estilização -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fonte manuscrita para os post-its -->
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #0f172a; /* Fundo azul marinho escuro (lousa) */
+            background-image: radial-gradient(circle at center, #1e293b 0%, #020617 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Estilo do painel mecânico numérico */
+        .flip-card {
+            background: linear-gradient(180deg, #222 0%, #0a0a0a 100%);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.7), inset 0 2px 2px rgba(255,255,255,0.1);
+            border-radius: 12px;
+            border: 2px solid #000;
+            position: relative;
+            color: white;
+        }
+        
+        /* Linha horizontal no meio do número (efeito flip-clock) */
+        .flip-card::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(0,0,0,0.9);
+            box-shadow: 0 1px 0 rgba(255,255,255,0.1);
+            transform: translateY(-50%);
+        }
+
+        .handwriting {
+            font-family: 'Caveat', cursive;
+        }
+
+        /* Notas adesivas (Post-its) */
+        .post-it {
+            box-shadow: 3px 5px 15px rgba(0,0,0,0.4);
+            position: absolute;
+            transition: transform 0.3s ease;
+        }
+        .post-it:hover {
+            transform: scale(1.05) rotate(0deg) !important;
+        }
+        
+        /* Rabiscos estilo lousa */
+        .chalk-text {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* Transições suaves para a troca de informações */
+        .transition-fade {
+            transition: opacity 0.8s ease-in-out;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-between py-8 px-4 relative">
+
+    <!-- Elementos Decorativos Flutuantes -->
+    <div class="post-it bg-[#fcf8e3] p-4 rounded-sm text-xl font-bold handwriting w-48 text-center hidden lg:block z-0 text-gray-800" 
+         style="top: 10%; left: 8%; transform: rotate(-5deg);">
+        FOCO<br>DISCIPLINA<br>CONSTÂNCIA<br>SONHO<br>FUTURO <span class="text-red-500">♡</span>
+    </div>
+
+    <div class="post-it bg-[#a2d5f2] p-4 rounded-sm text-xl font-bold handwriting w-56 text-center hidden lg:block z-0 text-gray-900" 
+         style="top: 15%; right: 8%; transform: rotate(4deg);">
+        O HOJE É A SUA<br>PREPARAÇÃO<br>PARA O AMANHÃ!
+    </div>
+
+    <!-- Conteúdo Principal - Envolto em uma div com ID para a transição -->
+    <div id="main-content" class="flex-1 flex flex-col items-center justify-center w-full z-10 mt-8 mb-12 transition-fade opacity-100">
+        
+        <!-- Título -->
+        <div class="text-center mb-10">
+            <h2 class="text-2xl md:text-4xl font-bold mb-2 tracking-widest text-gray-200">CONTAGEM REGRESSIVA</h2>
+            <div class="flex items-center justify-center gap-4">
+                <span class="text-4xl md:text-5xl font-black text-blue-400">=== PARA O ===</span>
+            </div>
+            <!-- O título da prova e a cor da borda mudarão no Javascript -->
+            <h1 class="text-5xl md:text-8xl font-black mt-2 text-white drop-shadow-[0_8px_8px_rgba(0,0,0,0.8)] transition-colors duration-500" 
+                id="exam-title-container"
+                style="text-shadow: 2px 2px 0 #3b82f6, -2px -2px 0 #3b82f6, 2px -2px 0 #3b82f6, -2px 2px 0 #3b82f6;">
+                <span id="exam-name">VESTIBULAR UVA</span> <span id="exam-year" class="text-yellow-400">2026</span>
+            </h1>
+        </div>
+
+        <!-- Relógio / Painel -->
+        <div class="flex items-center gap-4 md:gap-8 mb-12">
+            <!-- Dígito das Dezenas -->
+            <div class="flip-card w-28 h-40 md:w-48 md:h-64 flex items-center justify-center text-7xl md:text-[150px] font-bold pb-4" id="digit-tens">
+                5
+            </div>
+            <!-- Dígito das Unidades -->
+            <div class="flip-card w-28 h-40 md:w-48 md:h-64 flex items-center justify-center text-7xl md:text-[150px] font-bold pb-4" id="digit-units">
+                2
+            </div>
+            
+            <!-- Etiqueta DIAS -->
+            <div class="flex flex-col justify-center ml-2 md:ml-6">
+                <span class="text-5xl md:text-8xl font-black text-yellow-400 handwriting drop-shadow-lg chalk-text animate-pulse">DIAS</span>
+                <!-- Pequeno enfeite embaixo do "DIAS" -->
+                <svg class="w-full h-4 mt-2 text-yellow-400" viewBox="0 0 100 20" preserveAspectRatio="none">
+                    <path d="M0,10 Q50,20 100,5" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Frase Motivacional Inferior -->
+        <div class="flex flex-col items-center">
+            <p class="text-xl md:text-3xl font-bold text-gray-100 mb-2">👑 CADA DIA TE APROXIMA</p>
+            <div class="bg-yellow-400 text-gray-900 px-6 py-2 rounded-md text-3xl md:text-5xl font-black transform -rotate-2 shadow-xl border-b-4 border-yellow-600">
+                DO SEU MELHOR!
+            </div>
+        </div>
+    </div>
+
+    <!-- Faixa Branca com Logos (Rodapé) -->
+    <div class="w-full max-w-6xl bg-white rounded-3xl md:rounded-full p-4 md:py-4 md:px-10 flex flex-col md:flex-row items-center justify-between gap-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-10">
+        
+        <!-- Escola Raimundo Marques (Fixo) -->
+        <div class="flex items-center gap-4 border-b md:border-b-0 md:border-r-2 border-gray-300 pb-4 md:pb-0 md:pr-8 w-full md:w-1/2 justify-center md:justify-start">
+            <img src="Logo Raimundo Marques.jpeg" alt="Logo Escola Raimundo Marques" class="h-16 md:h-24 w-auto object-contain rounded-full shadow-sm">
+            <div class="flex flex-col text-gray-800 text-center md:text-left">
+                <h3 class="font-black text-sm md:text-lg leading-tight uppercase">EEMTI Raimundo Marques Nonato</h3>
+                <p class="text-xs md:text-sm text-gray-500 font-semibold mt-1">Arapá-Tianguá-CE | Educando para o Futuro</p>
+            </div>
+        </div>
+
+        <!-- Logo e Nome da Instituição Avaliadora (Dinâmico) -->
+        <div id="exam-info-container" class="flex items-center justify-center md:justify-end w-full md:w-1/2 gap-4 transition-fade opacity-100">
+            <!-- Texto Dinâmico -->
+            <div class="flex flex-col text-gray-800 text-center md:text-right max-w-[200px] md:max-w-[280px]">
+                <h3 id="exam-full-name" class="font-bold text-xs md:text-sm leading-tight uppercase text-gray-600">Universidade Estadual Vale do Acaraú</h3>
+            </div>
+            <!-- A imagem muda dinamicamente pelo Javascript -->
+            <img id="exam-logo" src="UVA.png" alt="Logo do Exame" class="h-14 md:h-24 max-w-[100px] md:max-w-[150px] object-contain">
+        </div>
+        
+    </div>
+
+    <script>
+        // Array com as configurações de cada exame
+        const exames = [
+            {
+                nome: "ENEM",
+                nomeCompleto: "Exame Nacional do Ensino Médio",
+                ano: "2026",
+                dias: "31", // <-- MUDE O NÚMERO DE DIAS DO ENEM AQUI
+                logo: "ENEM2026.png",
+                corBorda: "#2563eb" // Azul
+            },
+            {
+                nome: "SPAECE",
+                nomeCompleto: "Sistema Permanente de Avaliação da Educação Básica do Ceará",
+                ano: "2026",
+                dias: "19", // <-- MUDE O NÚMERO DE DIAS DO SPAECE AQUI
+                logo: "spaece logo.jpg",
+                corBorda: "#16a34a" // Verde
+            },
+            {
+                nome: "VESTIBULAR UVA",
+                nomeCompleto: "Universidade Estadual Vale do Acaraú",
+                ano: "2026",
+                dias: "52", // <-- MUDE O NÚMERO DE DIAS DA UVA AQUI
+                logo: "UVA.png",
+                corBorda: "#0284c7" // Azul Claro da UVA
+            }
+        ];
+
+        let indiceAtual = 0;
+
+        function trocarExame() {
+            const painelPrincipal = document.getElementById('main-content');
+            const examInfoContainer = document.getElementById('exam-info-container');
+            const logoExame = document.getElementById('exam-logo');
+
+            // 1. Inicia o Fade Out (Desaparecer)
+            painelPrincipal.classList.remove('opacity-100');
+            painelPrincipal.classList.add('opacity-0');
+            
+            examInfoContainer.classList.remove('opacity-100');
+            examInfoContainer.classList.add('opacity-0');
+
+            // 2. Espera a animação de desaparecer terminar (800ms) para trocar os dados
+            setTimeout(() => {
+                // Avança para o próximo exame no loop
+                indiceAtual = (indiceAtual + 1) % exames.length;
+                const exameAtual = exames[indiceAtual];
+
+                // Atualiza o Título e a Cor da sombra do título
+                document.getElementById('exam-name').innerText = exameAtual.nome;
+                document.getElementById('exam-year').innerText = exameAtual.ano;
+                
+                const tituloContainer = document.getElementById('exam-title-container');
+                tituloContainer.style.textShadow = `2px 2px 0 ${exameAtual.corBorda}, -2px -2px 0 ${exameAtual.corBorda}, 2px -2px 0 ${exameAtual.corBorda}, -2px 2px 0 ${exameAtual.corBorda}`;
+
+                // Atualiza os dias separando em dezenas e unidades
+                // Garante que o número sempre tenha 2 dígitos (ex: "09" em vez de "9")
+                const diasFormatados = exameAtual.dias.toString().padStart(2, '0'); 
+                document.getElementById('digit-tens').innerText = diasFormatados[0];
+                document.getElementById('digit-units').innerText = diasFormatados[1];
+
+                // Atualiza a Logo e o Nome Completo da parte direita do rodapé
+                logoExame.src = exameAtual.logo;
+                document.getElementById('exam-full-name').innerText = exameAtual.nomeCompleto;
+
+                // 3. Inicia o Fade In (Aparecer com os novos dados)
+                painelPrincipal.classList.remove('opacity-0');
+                painelPrincipal.classList.add('opacity-100');
+                
+                examInfoContainer.classList.remove('opacity-0');
+                examInfoContainer.classList.add('opacity-100');
+
+            }, 800); // Este tempo deve ser igual ao tempo do 'transition-fade' no CSS
+        }
+
+        // Executa a função trocarExame a cada 10 segundos (10000 milissegundos)
+        // Isso criará o loop infinito (carrossel) perfeito para a recepção da escola
+        setInterval(trocarExame, 10000);
+    </script>
+
+</body>
+</html>
